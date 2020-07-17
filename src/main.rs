@@ -3,7 +3,8 @@
 // use algo_warmup::lcm::execute;
 
 mod greedy_algorithm;
-use greedy_algorithm::maximum_loot::execute;
+// use greedy_algorithm::maximum_loot::execute;
+use greedy_algorithm::car_fuel::execute;
 
 fn main() {
     execute();
