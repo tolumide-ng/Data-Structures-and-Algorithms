@@ -6,7 +6,8 @@ mod greedy_algorithm;
 // use greedy_algorithm::maximum_loot::execute;
 // use greedy_algorithm::car_fuel::execute;
 // use greedy_algorithm::max_ad_revenue::execute;
-use greedy_algorithm::max_num_prizes::execute;
+// use greedy_algorithm::max_num_prizes::execute;
+use greedy_algorithm::max_salary::execute;
 
 fn main() {
     execute();
