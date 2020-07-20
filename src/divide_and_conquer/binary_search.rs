@@ -83,8 +83,6 @@ pub fn binary_search(dictionary: Container, search_item: u32) -> i32 {
 pub fn execute() {
     // let dictionary = Container::new(vec![5, 1, 5, 8, 12, 13]);
     let searches = Container::new(vec![5, 8, 1, 23, 1, 11]);
-    // let dic_length = dictionary.length;
-    // let low = 1;
 
     // let result = binary_search_recursive(dictionary, 5, low, dic_length as u32);
     let mut result_vec = Vec::new();

@@ -10,7 +10,9 @@
 // use greedy_algorithm::max_salary::execute;
 
 mod divide_and_conquer;
-use divide_and_conquer::binary_search::execute;
+// use divide_and_conquer::binary_search::execute;
+// use divide_and_conquer::major_element::execute;
+use divide_and_conquer::quick_sort::execute;
 
 fn main() {
     execute();
