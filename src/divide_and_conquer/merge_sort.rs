@@ -12,6 +12,11 @@ pub fn merge_sort(list: &mut Vec<u32>, left: u32, right: u32) -> Option<&Vec<u32
     }
     let mid = left + (right - left) / 2;
 
+    // println!(
+    //     "{:?}, LEFT ----> {}, MID -------->{}, RIGHT ------> {}",
+    //     list, left, mid, right
+    // );
+
     merge_sort(list, left, mid);
     merge_sort(list, mid + 1, right);
     merge_halves(list, left, mid, right);
@@ -26,6 +31,9 @@ pub fn merge_halves(list: &mut Vec<u32>, left: u32, mid: u32, right: u32) -> Opt
 
     let mut left_marker: usize = 0;
     let mut right_marker: usize = 0;
+
+    println!("the right half ====> {:?}", right_half);
+
     for i in left..=right {
         match i {
             _ if left_marker < left_half.len() && right_marker < right_half.len() => {
@@ -58,6 +66,6 @@ pub fn execute() {
         "weirdo --->>>>  {:?}",
         // merge_sort_caller(&mut vec![4, 5, 3, 12, 2, 4, 43, 9])
         // merge_sort_caller(&mut vec![4, 5, 3, 23, 654, 1, 123, 34, 12])
-        merge_sort_caller(&mut vec![4, 5, 3, 23, 654, 1, 123, 34, 12])
+        merge_sort_caller(&mut vec![4, 5, 3, 23, 654, 1, 123, 34, 12]) // merge_sort_caller(&mut vec![1, 3, 5, 2, 4, 6])
     );
 }
