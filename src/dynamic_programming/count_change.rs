@@ -34,6 +34,7 @@ fn count_change(money: u32, all_coins: Coins) -> u32 {
             } else {
                 let previous_possibilities =
                     total_possibilities[money_value as usize][(coin_index - 1) as usize];
+                // if the value of the coin is greater than the money value, just copy the values above it
                 if coins[coin_index] > money_value {
                     total_possibilities[money_value as usize][coin_index as usize] =
                         previous_possibilities;
@@ -48,13 +49,15 @@ fn count_change(money: u32, all_coins: Coins) -> u32 {
             }
         }
     }
-    // println!("FINAL >>>>> {:?}", total_possibilities);
+    println!("FINAL >>>>> {:?}", total_possibilities);
     total_possibilities[money as usize][coins.len() - 1]
 }
 
 pub fn execute() {
-    let coins = Coins { coins: vec![5, 7] };
-    let result = count_change(11, coins);
+    let coins = Coins {
+        coins: vec![1, 3, 4],
+    };
+    let result = count_change(34, coins);
     println!("Possible coin types {}", result);
 }
 

@@ -18,7 +18,8 @@
 // use divide_and_conquer::organizing_lottery::execute;
 
 mod dynamic_programming;
-use dynamic_programming::possible_coins::execute;
+// use dynamic_programming::count_change::execute;
+use dynamic_programming::money_change_again::execute;
 
 fn main() {
     execute();
