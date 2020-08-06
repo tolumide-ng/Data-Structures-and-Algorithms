@@ -23,7 +23,8 @@ mod dynamic_programming;
 // use dynamic_programming::primitive_calculator::execute;
 // use dynamic_programming::edit_distance::execute;
 // use dynamic_programming::longest_common_subsequence::execute;
-use dynamic_programming::max_amount_with_repetitions::execute;
+// use dynamic_programming::max_amount_with_repetitions::execute;
+use dynamic_programming::subset_sum::execute;
 
 fn main() {
     execute();
