@@ -1,0 +1,6 @@
+## Basic Instructions
+
+1. To build the workspace, run `cargo build` in the `top-level` directory
+2. Run a specific crate in the workspace e.g. `algo_toolbox` => `cargo run -p algo_toolbox`
+
+
