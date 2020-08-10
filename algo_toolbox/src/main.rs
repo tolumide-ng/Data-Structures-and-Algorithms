@@ -17,7 +17,7 @@
 // use divide_and_conquer::counting_inversions::execute;
 // use divide_and_conquer::organizing_lottery::execute;
 
-mod dynamic_programming;
+// mod dynamic_programming;
 // use dynamic_programming::count_change::execute;
 // use dynamic_programming::money_change_again::execute;
 // use dynamic_programming::primitive_calculator::execute;
@@ -25,10 +25,10 @@ mod dynamic_programming;
 // use dynamic_programming::longest_common_subsequence::execute;
 // use dynamic_programming::max_amount_with_repetitions::execute;
 // use dynamic_programming::subset_sum::execute;
-use dynamic_programming::max_num_operands::execute;
+// use dynamic_programming::max_num_operands::execute;
 
 fn main() {
-    execute();
+    // execute();
     // maximum_loot::max_loot();
 }
 

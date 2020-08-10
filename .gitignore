@@ -1,1 +1,6 @@
+./**/target/
 /target
+./algo_toolbox/target/
+./data_structs/target/
+data_structs/target/
+algo_toolbox/target/
