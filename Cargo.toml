@@ -2,5 +2,6 @@
 
 members= [
     "algo_toolbox",
-    "data_structs"
+    "data_structs",
+    "graph_algos",
 ]
