@@ -30,7 +30,7 @@ mod Graph_SSC {
     }
 
     impl Graph {
-        pub fn new(graph_info: Vec<(u8, u8)>) {
+        pub fn new(graph_info: Vec<(u8, u8)>) -> u8 {
             let mut adjacency_map: HashMap<u8, Vec<u8>> = HashMap::new();
             let graph = graph_info.get(1..);
             for value in graph.unwrap() {
@@ -42,7 +42,7 @@ mod Graph_SSC {
             let the_graph = Graph {
                 graph: Some(adjacency_map),
             };
-            the_graph.get_time();
+            return the_graph.get_time();
         }
 
         pub fn get_time(&self) -> u8 {
@@ -180,9 +180,9 @@ mod test {
             (5, 3),
         ]);
 
-        assert_eq!(result, 2);
-
         let result = Graph_SSC::Graph::new(vec![(4, 4), (1, 2), (4, 1), (2, 3), (3, 1)]);
+
+        assert_eq!(result, 2);
 
         // assert_eq!()
     }
