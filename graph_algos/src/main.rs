@@ -10,7 +10,8 @@ mod graph_paths;
 // use directed_graph::strongly_connected_comp::execute;
 // use bfs::min_flight_segments::execute;
 // use bfs::bipartite::execute;
-use graph_paths::djikstras_algorithm::execute;
+// use graph_paths::djikstras_algorithm::execute;
+use graph_paths::prims_algorithm::execute;
 
 fn main() {
     execute();
