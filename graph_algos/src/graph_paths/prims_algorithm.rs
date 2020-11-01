@@ -16,6 +16,7 @@ pub fn execute() {
 }
 
 mod prims {
+    use crate::graph_paths::priority_queue;
     use rand::Rng;
     use std::cmp::Eq;
     use std::collections::HashMap;
