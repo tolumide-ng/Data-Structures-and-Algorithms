@@ -15,8 +15,8 @@ pub fn execute() {
 
 #[derive(Debug, Clone, Copy)]
 pub struct Node<T> {
-    weight: i8,
-    node: T,
+    pub weight: i8,
+    pub node: T,
     time_added: u8,
 }
 
@@ -25,6 +25,7 @@ pub struct BinaryHeap<T> {
     heap: Vec<Node<T>>,
     max_size: usize,
     size: usize,
+    realistic_size: usize,
 }
 
 use std::fmt::{Debug, Display};
@@ -38,6 +39,7 @@ where
             max_size,
             heap: Vec::new(),
             size: 0,
+            realistic_size: 0,
         }
     }
 
@@ -53,10 +55,10 @@ where
     }
 
     pub fn get_left_child(&self, index: usize) -> Option<usize> {
-        if (index == 0 && self.size > 0) {
+        if (index == 0 && self.heap.len() > 1) {
             return Some(1);
         }
-        if index * 2 < self.size {
+        if index * 2 < self.heap.len() {
             return Some(index * 2);
         } else {
             return None;
@@ -64,10 +66,10 @@ where
     }
 
     pub fn get_right_child(&self, index: usize) -> Option<usize> {
-        if index == 0 && self.size > 0 {
-            return Some(index + 2);
+        if index == 0 && self.heap.len() > 2 {
+            return Some(2);
         }
-        if (index * 2) + 1 < self.size {
+        if (index * 2) + 1 < self.heap.len() {
             return Some(index * 2 + 1);
         }
         None
@@ -99,7 +101,6 @@ where
 
     pub fn sift_down(&mut self, index: usize) {
         let mut new_index = index;
-
         let left_child_index = self.get_left_child(index);
 
         match left_child_index {
@@ -153,7 +154,8 @@ where
                 node: value.1,
                 time_added: (self.size) as u8,
             });
-            self.sift_up(self.size - 1);
+
+            self.sift_up(self.heap.len() - 1);
         }
     }
 
@@ -165,6 +167,8 @@ where
             self.size -= 1;
             self.sift_down(0);
             return Some(result);
+        } else if self.heap.len() == 1 {
+            return self.heap.pop();
         }
         return None;
     }
@@ -196,6 +200,10 @@ where
         } else {
             self.sift_up(index);
         }
+    }
+
+    pub fn total_length(&mut self) -> usize {
+        return self.heap.len();
     }
 }
 
