@@ -43,6 +43,7 @@ mod prims {
     pub struct MST<T> {
         start_vertex: T,
         end_vertex: T,
+        pub distance: u64,
     }
 
     #[derive(Copy, Clone, Debug)]
@@ -55,7 +56,7 @@ mod prims {
     where
         T: Debug + Eq + Hash + Copy + Display + Clone,
     {
-        pub fn new(graph_info: Vec<(T, T, u64)>) {
+        pub fn new(graph_info: Vec<(T, T, u64)>) -> Vec<MST<T>> {
             let mut adjacency_dic: HashMap<T, Vec<(T, u64)>> = HashMap::new();
 
             let mut dic_distance: HashMap<T, PrimsVertex<T>> = HashMap::new();
@@ -106,11 +107,13 @@ mod prims {
                 all_edges,
             };
 
+            // print!("the")
+
             let mut rng = rand::thread_rng();
             let n: usize = rng.gen_range(0, all_vertex.len());
             let start_vertex = all_vertex.get(n).unwrap();
 
-            the_graph.get_mst(&mut dic_distance, *start_vertex);
+            return the_graph.get_mst(&mut dic_distance, *start_vertex);
         }
 
         pub fn get_mst(
@@ -123,47 +126,36 @@ mod prims {
             let mut priority_queue = priority_queue::BinaryHeap::new(20);
             priority_queue.insert((0, start_vertex));
 
+            dic_distance
+                .get_mut(&start_vertex)
+                .unwrap()
+                .distance_from_parent = 0.0;
+
             while priority_queue.total_length() > 0 {
                 let v = priority_queue.extract_min().unwrap();
 
-                // {
-                // for the sake of the mutable borrow use scopes so we can deref after this block
-                // let the_vertex = dic_distance.get_mut(&v.node).unwrap();
-                // println!(
-                //     "after the unwrap THE VERTEX ===>>> {:?}  +++++++++++{:?}",
-                //     the_vertex.vertex, the_vertex.parent
-                // );
-
-                // println!(
-                //     "HOW TRUE IS THIS??????? {:?}",
-                //     dic_distance.get_mut(&v.node).unwrap().in_mst
-                // );
-                println!(
-                    "WE HAVE TO PRINT THIS PLS!!!!!!>>>>>>>>>>????????? {:#?}",
-                    dic_distance.get_mut(&v.node).unwrap()
-                );
-
-                // println!(
-                //     "TH CONDITIONS ONE {:#?}",
-                //     dic_distance.get_mut(&v.node).unwrap().parent.is_some()
-                // );
-                // println!(
-                //     "THE CONDITION TWO {:#?}",
-                //     !dic_distance.get_mut(&v.node).unwrap().in_mst
-                // );
                 if dic_distance.get_mut(&v.node).unwrap().parent.is_some()
                     && !dic_distance.get_mut(&v.node).unwrap().in_mst
                 {
-                    println!("TESTED AND TRSUSTED !!!!!");
+                    let distance = self
+                        .all_edges
+                        .iter()
+                        .find(|&&x| {
+                            (x.first == dic_distance.get(&v.node).unwrap().parent.unwrap()
+                                || x.first == dic_distance.get(&v.node).unwrap().vertex)
+                                && (x.second == dic_distance.get(&v.node).unwrap().parent.unwrap()
+                                    || x.second == dic_distance.get(&v.node).unwrap().vertex)
+                        })
+                        .unwrap()
+                        .weight;
+
                     mst_tree.push(MST {
-                        start_vertex: dic_distance.get_mut(&v.node).unwrap().vertex,
-                        end_vertex: dic_distance.get_mut(&v.node).unwrap().parent.unwrap(),
+                        start_vertex: dic_distance.get(&v.node).unwrap().vertex,
+                        end_vertex: dic_distance.get(&v.node).unwrap().parent.unwrap(),
+                        distance: distance,
                     });
                 }
                 dic_distance.get_mut(&v.node).unwrap().in_mst = true;
-                // }
-
-                // println!("AT THIS POTINT {:#?}", self.graph);
 
                 let all_neighbours = self
                     .graph
@@ -173,7 +165,6 @@ mod prims {
                     .unwrap();
 
                 for value in all_neighbours {
-                    let current_neighbour = dic_distance.get(&value.0).unwrap();
                     let current_edge = self
                         .all_edges
                         .iter()
@@ -186,41 +177,77 @@ mod prims {
                         .unwrap();
 
                     if !dic_distance.get(&value.0).unwrap().in_mst
-                        && current_neighbour.distance_from_parent > current_edge.weight as f64
+                        && dic_distance.get(&value.0).unwrap().distance_from_parent
+                            > current_edge.weight as f64
                     {
-                        println!("MADE IT THIS FAR {:?}", value);
-                        let the_vertex = dic_distance.get_mut(&v.node).unwrap();
+                        let the_vertex = dic_distance.get_mut(&value.0).unwrap();
+
                         if the_vertex.vertex == current_edge.first {
-                            // println!("ENTERED HERE THE FIRST ********* {:?}", current_edge.first);
                             the_vertex.parent = Some(current_edge.second);
                             the_vertex.distance_from_parent = current_edge.weight as f64;
-                            priority_queue.insert((current_edge.weight as i8, current_edge.second));
-                        // println!(
-                        //     "WE HAVE TO PRINT THIS PLS--------------------------------------- {:#?}---------------------------------------",
-                        //     dic_distance
-                        // );
+                            priority_queue.insert((current_edge.weight as i8, current_edge.first));
                         } else {
-                            // println!("ENTERED THE SECOND ########## {:?}", current_edge.second);
                             the_vertex.parent = Some(current_edge.first);
                             the_vertex.distance_from_parent = current_edge.weight as f64;
-                            priority_queue.insert((current_edge.weight as i8, current_edge.first));
-                            // println!(
-                            //     "--------------------------------------- {:#?}---------------------------------------",
-                            //     dic_distance
-                            // );
+                            priority_queue.insert((current_edge.weight as i8, current_edge.second));
                         }
                     }
                 }
             }
 
-            // println!(
-            //     "WE WERE DOWN HERE FOR THE dic_distance>>>>>>>>>. {:#?} <<<<<<<<<<<<<<<<",
-            //     dic_distance
-            // );
-
             println!("WE WERE DOWN HERE FOR THE MST {:#?}", mst_tree);
 
             return mst_tree;
         }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::prims;
+
+    #[test]
+    fn get_mst_distance() {
+        let result = prims::PrimsGraph::new(vec![
+            ("a", "f", 2),
+            ("a", "b", 2),
+            ("a", "d", 7),
+            ("f", "b", 5),
+            ("b", "d", 4),
+            ("f", "c", 4),
+            ("b", "c", 1),
+            ("b", "e", 3),
+            ("c", "e", 4),
+            ("d", "e", 1),
+            ("e", "g", 7),
+            ("d", "g", 5),
+        ]);
+
+        let the_sum: u64 = result.iter().map(|num| num.distance).sum();
+
+        assert_eq!(the_sum, 14);
+    }
+
+    #[test]
+    fn mst_less_than_14() {
+        let result = prims::PrimsGraph::new(vec![
+            ("a", "f", 2),
+            ("a", "b", 2),
+            ("a", "d", 7),
+            ("f", "b", 5),
+            ("b", "d", 4),
+            ("f", "c", 4),
+            // ("b", "c", 1),
+            ("b", "e", 3),
+            // ("c", "e", 4),
+            // ("d", "e", 1),
+            ("e", "g", 7),
+            ("d", "g", 5),
+        ]);
+
+        let the_sum: u64 = result.iter().map(|num| num.distance).sum();
+
+        assert!(the_sum > 14);
+        assert_ne!(the_sum, 14);
     }
 }
