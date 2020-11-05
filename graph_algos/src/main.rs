@@ -11,8 +11,9 @@ mod graph_paths;
 // use bfs::min_flight_segments::execute;
 // use bfs::bipartite::execute;
 // use graph_paths::djikstras_algorithm::execute;
-use graph_paths::prims_algorithm::execute;
+// use graph_paths::prims_algorithm::execute;
 // use graph_paths::priority_queue::execute;
+use graph_paths::kruskals_algorithm::execute;
 
 fn main() {
     execute();
