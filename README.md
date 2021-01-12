@@ -1,6 +1,5 @@
 ## Peronal Algo and Data Structures Repo
 
-:warning: Please, do not submit PRs to this repo :warning:
 
 ## Basic Instructions
 
